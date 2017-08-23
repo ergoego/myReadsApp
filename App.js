@@ -6,7 +6,7 @@ import AddBookPage from './components/views/AddBookPage'
 import './styles/App.css'
 
 class MyReadsApp extends Component {
- /* state = {
+  state = {
     books: []
   }
 componentDidMount() {
@@ -25,7 +25,7 @@ updateShelf = (book, shelf) => {
   BooksAPI.update(book, shelf).then((book, shelf) => {
     this.setState({ books })
   })
-} */
+} 
 
 /* NEED TO IMPLEMENT THIS. THIS FEELS BAD SO FAR
 const maxSearchResults = 14
