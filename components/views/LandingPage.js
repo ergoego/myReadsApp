@@ -1,9 +1,6 @@
 import React, { Component } from 'react' 
 import Navbar from './assemblies/Navbar'
-import CurrentlyReading from './assemblies/CurrentlyReading'
-import WantToRead from './assemblies/WantToRead'
-import Read from './assemblies/Read'
-import Footer from './assemblies/Footer'
+import BookShelf from './assemblies/BookShelf'
 
 class LandingPage extends Component {
 	render() {
@@ -13,18 +10,14 @@ class LandingPage extends Component {
 					<Navbar/>
 				</div>
 				<div className="currently-reading">
-					<CurrentlyReading/>
+					<BookShelf name="Currently Reading"/>
 				</div>
-				<div className="want-to-read">
-					<WantToRead/>
+				<div className="currently-reading">
+					<BookShelf name="Want to Read"/>
 				</div>
-				<div className="read">
-					<Read/>
+				<div className="currently-reading">
+					<BookShelf name="Read"/>
 				</div>
-				<div className="footer">
-					<Footer/>
-				</div>
-					
 			</div>
 		)
 	}
@@ -32,26 +25,4 @@ class LandingPage extends Component {
 
 export default LandingPage
 
-/*<div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
-</div>
-            </div>
-            
-          </div> 
------ taken from contacts app.js file
-          <Route exact path='/' render={() => ( // the 'exact' here means that the url has to be www.asdf.com/, whereas if we do not have the 'exact', www.asdf.com/about would also return true here. 
-	          			<ListContacts 
-	            			onDeleteContact={this.removeContact} 
-	            			contacts={this.state.contacts} 
-	          			/>
-	        		)}/>
-	        		<Route path='/create' render={({ history }) => (
-	            		<CreateContact onCreateContact={(contact) => {
-	                		this.createContact(contact)
-	                		history.push('/')
-	              		}}/>
-	        		)}/> */
+

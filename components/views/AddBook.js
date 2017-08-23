@@ -1,16 +1,16 @@
 import React, { Component } from 'react' 
 
-class AddBookPage extends Component {
+class AddBook extends Component {
   render() {
     return(
       <div>
-        <h1>AddBookPage</h1>
+        <h1>AddBook</h1>
       </div>
     )
   }
 }
 
-export default AddBookPage
+export default AddBook
 /*
 <div className="search-books">
             <div className="search-books-bar">
