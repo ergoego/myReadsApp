@@ -1,26 +1,27 @@
 import React, { Component } from 'react' 
+import BookActionButton from './components/BookActionButton'
+import PropTypes from 'prop-types'
 
-function Book (props) {
-	return(
-			<li>
-                <div className="book">
-                    <div className="book-top">
-                        <div className="book-cover" style={{backgroundImage: props.coverURL}}></div>
-                        <div className="book-shelf-changer">
-                            <select>
-                                <option value="none" disabled>Move to...</option>
-                                <option value="currentlyReading">Currently Reading</option>
-                                <option value="wantToRead">Want to Read</option>
-                                <option value="read">Read</option>
-                                <option value="none">None</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className="book-title">{props.title}</div>
-                	<div className="book-authors">{props.author}</div>
+class Book extends Component {
+static PropTypes = {
+	changeBookShelf: PropTypes.func.isRequired,
+	book: PropTypes.object.isRequired
+}
+	render() {
+		let {book} = this.props
+		let authors = book.authors ? book.authors.join(', ') : ''
+		let coverURL = book.imageLinks ? book.imageLinks.thumbnail : ''
+		return(
+            <div className="book">
+                <div className="book-top">
+                    <div className="book-cover" style={{backgroundImage: `url(${coverURL})`}} ></div>
+                    <BookActionButton changeBookShelf={this.props.changeBookShelf} book={book}/>
                 </div>
-            </li>
-    )
+                <div className="book-title">{book.title}</div>
+             <div className="book-authors">{book.authors}</div>
+            </div>
+    	)
+	}
 }
 
 export default Book 

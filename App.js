@@ -1,50 +1,82 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
+
 import * as BooksAPI from './BooksAPI'
+
 import LandingPage from './components/views/LandingPage'
-import AddBook from './components/views/AddBook'
+import AddBook from './components/views/SearchBooks'
+
 import './styles/App.css'
 
 class MyReadsApp extends Component {
-  state = {
-    books: []
-  }
-componentDidMount() {
-  BooksAPI.getAll().then(books => {
-    this.setState({ books })
-  })
+  
+state = {
+  books: []
 }
-getBook = (book) => {
-  BooksAPI.get(book).then(book => {
-    this.setState(state => ({
-      books: state.books.concat([ book ])
-    }))
-  })
-}
-updateShelf = (book, shelf) => {
-  BooksAPI.update(book, shelf).then((book, shelf) => {
-    this.setState({ books })
-  })
-} 
 
-/* NEED TO IMPLEMENT THIS. THIS FEELS BAD SO FAR
-const maxSearchResults = 14
-search = (query, maxSearchResults) => {
-  BooksAPI.search(query, maxSearchResults).then((query, maxSearchResults) => {
-    this.setState({ books })
-  }) 
-} */
+myReadsBooks = () => {
+  BooksAPI.getAll()
+    .then(books => {
+      this.setState({books})
+    })
+}
+
+changeBookShelf = (bookToChange, newShelf) => {
+  BooksAPI.update(bookToChange, newShelf)
+    .then(result => {
+      this.setState((e) => { // do I need a parameter here? Why can't I just do () => ?
+        books: e.books.map(book =>{
+          if(bookToChange.id === book.id) {
+            book.shelf = newShelf
+          }
+          return book
+        })
+      })
+    })
+}
+
+searchBooks = (query) => { 
+  if(query) {
+    BooksAPI.getAll()
+      .then(booksAPI => {
+        BooksAPI.search(query)
+          .then(response => {
+            let books = [];
+            if(Array.isArray(response)) {
+              books = response;
+            }
+            if(Array.isArray(response.books)) {
+              books = response.books;
+            }
+            if(books) {
+              books = books.map(book => {
+                const bookAPI = booksAPI.find(bookAPI => bookAPI.id === book.id);
+                if(bookAPI) {
+                  return bookAPI;
+                } else {
+                  return book;
+                }
+              });
+              if(this.state.books !== books) {
+                this.setState({ books });
+              }
+            }
+          });
+      })
+  } else {
+    this.setState({ books: [] });
+  }
+}
+
   render() {
     return (
       <div className="app">
         <Route exact path='/' render={() => (
-          <LandingPage books={this.state.books}/>
+          <LandingPage books={this.state.books} changeBookShelf={this.changeBookShelf} myReadsBooks={this.myReadsBooks}/>
         )}/>
-        <Route path='/addbook' render={({ history }) => (
-          <AddBook onAddBook={(book) => {
-            this.addBook(book)
-            history.push('/')
-          }}/>
+
+        <Route path='/search' render={() => (
+          <AddBook books={this.state.books} changeBookShelf={this.changeBookShelf} searchBooks={this.searchBooks}/>
         )}/>
       </div>
     )
@@ -52,17 +84,3 @@ search = (query, maxSearchResults) => {
 }
 
 export default MyReadsApp
-/*
------ taken from contacts app.js file
-          <Route exact path='/' render={() => ( // the 'exact' here means that the url has to be www.asdf.com/, whereas if we do not have the 'exact', www.asdf.com/about would also return true here. 
-                  <ListContacts 
-                    onDeleteContact={this.removeContact} 
-                    contacts={this.state.contacts} 
-                  />
-              )}/>
-              <Route path='/create' render={({ history }) => (
-                  <CreateContact onCreateContact={(contact) => {
-                      this.createContact(contact)
-                      history.push('/')
-                    }}/>
-              )}/> */

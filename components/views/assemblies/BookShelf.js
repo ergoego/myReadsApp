@@ -1,19 +1,34 @@
 import React, { Component } from 'react' 
 import Book from './blocks/Book'
 
-function BookShelf(props) {
-		return( // maybe in here loop through the books array and get whatever books match the props.name (which will return what shelf we are on)?? So then when we call this function we get the bookshelf belonging to whatever name category we call (currently reading, want to read or read) and whatever books belong to that shelf. 
-			<div className="bookshelf">
-                <h2 className="bookshelf-title">{props.name}</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid"> 
-                    	<Book/> 
-                    	<Book/>
-                    </ol>
-                </div>
-            </div>
-		)
+import PropTypes from 'prop-types'
+
+class BookShelf extends Component {
+
+static PropTypes = {
+	changeBookShelf: PropTypes.func.isRequired,
+	name: PropTypes.string.isRequired,
+	books: PropTypes.array.isRequired
 }
 
+render(){
+	return( 
+		<div className="bookshelf">
+            <h2 className="bookshelf-title">{this.props.name}</h2>
+            <div className="bookshelf-books">
+                <ol className="books-grid"> 
+                   {this.props.books.map(book => ( //this arrow function uses parenthases instead of curly brackets because it is returning one single value. In this case, that single value is a JSX element. This was causing the books not to render but did not throw a compile-time error. Very sneaky. 
+                   		<li key={book.id}>
+                   			<Book
+                   				changeBookShelf={this.props.changeBookShelf}
+                   				book={book}
+							/>
+						</li>
+                   ))} 
+                </ol>
+            </div>
+        </div>
+	)}	
+}
 
 export default BookShelf

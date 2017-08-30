@@ -26,7 +26,7 @@ const config = {
       filename: 'index.html',
       inject: 'body'
     }),
-    new webpack.optimize.UglifyJsPlugin(),
+    /* ENABLE WHEN PROD:*/ // new webpack.optimize.UglifyJsPlugin(),
   ]
 }
 
